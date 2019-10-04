@@ -290,6 +290,7 @@ namespace Leap.Unity.Examples {
     /// forward vector face the camera while aligning its upward vector against gravity.
     /// </summary>
     public WorkstationRotationFunc workstationRotationFunc;
+    public Transform ZEDCamera;
 
     private List<Vector3> _otherStationObjPositions = new List<Vector3>();
     private List<float> _otherStationObjRadii = new List<float>();
@@ -301,13 +302,13 @@ namespace Leap.Unity.Examples {
     }
 
     private Vector3 determineWorkstationPosition() {
-      return workstationPositionFunc(Camera.main.transform.position, Camera.main.transform.rotation,
+      return workstationPositionFunc(ZEDCamera.position, ZEDCamera.rotation,
                                      _intObj.rigidbody.position, _intObj.rigidbody.velocity, 0.30F,
                                      _otherStationObjPositions, _otherStationObjRadii);
     }
 
     private Quaternion determineWorkstationRotation(Vector3 workstationPosition) {
-      return workstationRotationFunc(Camera.main.transform.position, workstationPosition);
+      return workstationRotationFunc(ZEDCamera.position, workstationPosition);
     }
 
     public static Vector3 DefaultDetermineWorkstationPosition(Vector3 userEyePosition, Quaternion userEyeRotation,

@@ -25,6 +25,8 @@ namespace Leap.Unity.Examples {
     public UnityEvent OnBeginFacingCamera;
     public UnityEvent OnEndFacingCamera;
 
+    public Transform cameraLocation;
+
     void Start() {
       if (toFaceCamera != null) initialize();
     }
@@ -32,7 +34,9 @@ namespace Leap.Unity.Examples {
     private void initialize() {
       // Set "_isFacingCamera" to be whatever the current state ISN'T, so that we are
       // guaranteed to fire a UnityEvent on the first initialized Update().
-      _isFacingCamera = !GetIsFacingCamera(toFaceCamera, Camera.main);
+//      _isFacingCamera = !GetIsFacingCamera(toFaceCamera, Camera.main);
+      _isFacingCamera = !GetIsFacingCamera(toFaceCamera, cameraLocation);
+
       _initialized = true;
     }
 
@@ -42,7 +46,8 @@ namespace Leap.Unity.Examples {
       }
       if (!_initialized) return;
 
-      if (GetIsFacingCamera(toFaceCamera, Camera.main, _isFacingCamera ? 0.77F : 0.82F) != _isFacingCamera) {
+      //if (GetIsFacingCamera(toFaceCamera, Camera.main, _isFacingCamera ? 0.77F : 0.82F) != _isFacingCamera) {
+        if (GetIsFacingCamera(toFaceCamera, cameraLocation, _isFacingCamera ? 0.77F : 0.82F) != _isFacingCamera) {
         _isFacingCamera = !_isFacingCamera;
 
         if (_isFacingCamera) {
@@ -54,8 +59,11 @@ namespace Leap.Unity.Examples {
       }
     }
 
-    public static bool GetIsFacingCamera(Transform facingTransform, Camera camera, float minAllowedDotProduct = 0.8F) {
-      return Vector3.Dot((camera.transform.position - facingTransform.position).normalized, facingTransform.forward) > minAllowedDotProduct;
+    // public static bool GetIsFacingCamera(Transform facingTransform, Camera camera, float minAllowedDotProduct = 0.8F) {
+      public static bool GetIsFacingCamera(Transform facingTransform, Transform cameraLocation, float minAllowedDotProduct = 0.8F) {
+
+      //return Vector3.Dot((camera.transform.position - facingTransform.position).normalized, facingTransform.forward) > minAllowedDotProduct;
+      return Vector3.Dot((cameraLocation.transform.position - facingTransform.position).normalized, facingTransform.forward) > minAllowedDotProduct;
     }
 
   }
